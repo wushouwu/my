@@ -1,0 +1,49 @@
+﻿/*  jquery.fn.js	textEllipsis	方法样式	*/
+/*	字符串省略 鼠标移上时提示框样式	*/
+.mix-text-ellipsis-tip{
+	border:1px solid #5387ff;
+	border-radius:3px;
+	font-size: 14px;
+	padding: 0px 3px;
+	background:white;
+}
+/*  jquery.fn.js 编辑按钮*/
+.my-edit-button{
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    border-radius: 50%;
+    width: 10%;
+    height: 10vw;
+    background: green;
+    z-index: 99;
+    text-align: center;
+    padding: 2%
+}
+.my-edit-button .fa{
+    color: white;
+    font-size: 7vw;
+}
+/*  jquery.fn.js 提示框*/
+.my-toast-container {
+    position: fixed;
+    z-index: 9999;
+    bottom: 50px;
+    width: 100%;
+    -webkit-transition: opacity .8s;
+    transition: opacity .8s;
+    opacity: 0;
+}
+.my-toast-container.my-active {
+    opacity: 1;
+}
+.my-toast-message {
+    font-size: 14px;
+    width: 270px;
+    margin: 5px auto;
+    padding: 5px;
+    text-align: center;
+    color: #000;
+    border-radius: 7px;
+    background-color: #d8d8d8;
+}
