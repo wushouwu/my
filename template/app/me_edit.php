@@ -27,6 +27,12 @@ html,body{
 	white-space:nowrap;
 	color: #333333;
 }
+.my-fieldset .my-required{
+	color: red;
+}
+.my-fieldset .my-required:after{
+	content:"·";
+}
 .my-fieldset .my-name~*:not(textarea){
 	font-size: 17rem;
 	line-height: 2.35em;
@@ -36,7 +42,7 @@ html,body{
     font-size: 15rem;
     height: 10em;
     border: 1px solid #cccccc;
-    margin: 0.5%;
+    margin: 1%;
     border-radius: 3px;
     padding: 1%;
 }
@@ -65,6 +71,7 @@ html,body{
 </div>
 </body>
 <script type="text/javascript">
+//表单字段处理
 jq.fn.myField=function(field){
 	var $group=this,
 		html='';
@@ -72,16 +79,16 @@ jq.fn.myField=function(field){
 		field: '',
 		value: '',
 		name: '',
-		type: 'text',
+		type: 'varchar',
 		readonly: false,
 		required:　false,
 		placeholder: ''
 	},field);
 	switch(field.type){
-		case 'text': 
+		case 'varchar': 
 			html='<input name="'+field.field+'"  type="text" value="'+field.value+'" />';
 		break;
-		case 'textarea':
+		case 'text':
 			html='<textarea name="'+field.field+'">'+field.value+'</textarea>';
 		break;  
 		case 'datetime':
@@ -91,7 +98,7 @@ jq.fn.myField=function(field){
 		default: 
 			html='<input name="'+field.field+'"  type="text" value="'+field.value+'" />';
 	}	
-	jq(
+	$field=jq(
 		'<div class="mui-input-row my-field">\
 			<label  class="my-name"><span>'+field.name+'</span></label>\
 			'+html+'\
@@ -101,14 +108,21 @@ jq.fn.myField=function(field){
 	.children().last()
 		.attr('readonly',function(){
 			var field=jq(this).parent().data('data');
-			jq(this).attr('required',field.required);
+			jq(this).attr('required',eval(field.required));
+			if(eval(field.required)){
+				jq(this).siblings('.my-name').append('<span class="my-required"></span>');
+			}
 			jq(this).attr('placeholder',field.placeholder);
+			if(field.type=='hidden'){
+				jq(this).parent().css({display:'none'});
+			}			
 			return field.readonly;
 		});
 }
 var mix_app_page={
     id: c.param_get('id'),
     init: function(page){
+		//字段信息请求
     	jq.myAjax({
     		url: '?m=memory&c=me&a=fields',
     		data: {
@@ -128,43 +142,37 @@ var mix_app_page={
 						}
 					})
 				}else{
+					if(data.datetime){
+						data.datetime.value=new Date().Format('Y-m-dTH:i:s');
+					}
+					delete data.id;
 					page.dataHandle(data,body,response);
 				}
     		}
     	});
     },
-	dataHandle: function(data,body,response,field_value){
-		var page=this,
-			fields=[
-				{name:'属性',type:'text',field: 'attribute'},
-				{name:'值',type:'text',field:'value'},
-				{name:'标签',type:'select',field: 'word'},
-				{name:'时间',type:'datetime',field: 'datetime',value: new Date().Format('Y-m-dTH:i:s')},
-				{name:'描述',type:'textarea',field: 'description'}
-			];
+	//字段生成处理
+	dataHandle: function(fields,body,response,field_value){
+		var page=this;
 		for(var key in fields){
 			var field=fields[key];
-			if(field.field in data){
-				field.value=field_value &&　field_value[field.field]?field_value[field.field]:field.value;
-				jq('#info').myField(field);
-			}
+			field.value=field_value &&　field_value[field.field]?field_value[field.field]:field.value;
+			jq('#info').myField(field);
 		}
 		jq('button').get(0).addEventListener('tap',function(){
 			var data=[];
 			for(var key in fields){
 				var field=fields[key];
 				data[field.field]=jq('[name="'+field.field+'"]').val();
-				if(!data[field.field]){
+				if(!data[field.field] && eval(field.required)){
 					mui.toast(field.name+'不能为空');
 					return;
 				}
 			}
-			if(field_value &&　field_value.id){
-				data['id']=field_value.id;
-			}
 			page.submit(data);
 		});		
 	},
+	//保存提交
     submit: function(data){
     	jq.myAjax({
     		url: '?m=memory&c=me&a=edit',
