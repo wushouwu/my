@@ -22,9 +22,16 @@ class controller extends db {
 	//查字段
 	function fields(){
         if(isset($_REQUEST['table'])&& $_REQUEST['table']){
-			$sql='show full fields from `'.$_REQUEST['table'].'`';
-			$ouput=$this->query_fetch($sql,'Field');
-			echo json_encode(array('res'=>1,'data'=>$ouput));
+			$sql="SELECT `COLUMN_NAME` field,`DATA_TYPE` type,`COLUMN_COMMENT` name FROM  `information_schema`.`COLUMNS` WHERE `TABLE_NAME` =  '{$_REQUEST['table']}' && TABLE_SCHEMA ='{$this->db}'";
+			$output=$this->select(
+				'`information_schema`.`COLUMNS`',
+				'`COLUMN_NAME` field,`DATA_TYPE` type,`COLUMN_COMMENT` name,case `IS_NULLABLE` WHEN "YES" THEN "false" ELSE "true" end required,IFNULL("",`COLUMN_DEFAULT`) value',
+				"`TABLE_NAME` =  '{$_REQUEST['table']}' && TABLE_SCHEMA ='{$this->db}'",
+				"",'','','field');
+			if(isset($output['id'])){
+				$output['id']['type']='hidden';
+			}
+			echo json_encode(array('res'=>1,'data'=>$output));
         }else{
 			echo json_encode(array('res'=>0,'msg'=>'没有表'));
 		}
