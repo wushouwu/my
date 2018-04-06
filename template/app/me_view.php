@@ -74,7 +74,7 @@ html,body{
 </div>
 </body>
 <script type="text/javascript">
-var mix_app_page={
+var page={
     init: function(page){
 		jq('body').edit({
 			tap: function(){
@@ -120,6 +120,6 @@ var mix_app_page={
 		}
     }
 };
-mix_app_page.init(mix_app_page);
+page.init(page);
 </script>
 </html>

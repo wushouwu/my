@@ -157,10 +157,9 @@ window.c={
 };
 //mui pullrefresh
 jq(function(){
-	if(jq('.mui-scroll-wrapper').length && mui && typeof(mix_app_page)!='undefined' && mix_app_page.pullRefresh){
-		mix_app_page.pullRefresh.callback=function(){
-			var page=mix_app_page,
-				pullrefresh=this,
+	if(jq('.mui-scroll-wrapper').length && mui && typeof(page)!='undefined' && page.pullRefresh){
+		page.pullRefresh.callback=function(){
+			var pullrefresh=this,
 				option=page.pullRefresh;
 			if(pullrefresh.pulldown){
 				option.data.start=0;
@@ -190,12 +189,12 @@ jq(function(){
 			pullRefresh: {
 				container: '.mui-scroll-wrapper',
 				down: {
-					callback: mix_app_page.pullRefresh.callback
+					callback: page.pullRefresh.callback
 				},
 				up: {
 					auto: true,
 					contentrefresh: '正在加载...',
-					callback: mix_app_page.pullRefresh.callback
+					callback: page.pullRefresh.callback
 				}
 			}
 		});

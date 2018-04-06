@@ -119,7 +119,7 @@ jq.fn.myField=function(field){
 			return field.readonly;
 		});
 }
-var mix_app_page={
+var page={
     id: c.param_get('id'),
     init: function(page){
 		//字段信息请求
@@ -187,6 +187,6 @@ var mix_app_page={
     	}); 
     }
 }
-mix_app_page.init(mix_app_page);
+page.init(page);
 </script>
 </html>
