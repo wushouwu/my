@@ -3,6 +3,7 @@ class db {
 	function __construct($host='localhost',$user='root',$passord='passw0rd',$db='memory'){
 		$con=mysqli_connect($host,$user,$passord,$db) or die('connect:'.mysqli_connect_error());
 		$this->con=$con;
+		$this->db=$db;
 		mysqli_set_charset($con,'utf8') or die(mysqli_error($con));
 	}
 	//选择表字段数据
