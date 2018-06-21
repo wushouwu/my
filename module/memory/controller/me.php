@@ -2,7 +2,7 @@
 class me extends controller{
 	function __construct(){
 		parent::__construct();
-		$this->table='`me`';
+		$this->table='me';
 	}
 	function __call($method,$args){
 		try { 	
@@ -14,9 +14,8 @@ class me extends controller{
 	}
 	//添加编辑
 	function edit(){
-		$res=$this->input($this->table,$_REQUEST['info']);
+		$res=$this->T($this->table)->input($_REQUEST['info']);
 		echo json_encode(array('res'=>$res));
 	}
 }
 ?>
-

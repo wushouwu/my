@@ -4,7 +4,7 @@ class dir{
 	function __construct(){
 	}
 	//加载类
-	static function include_class($class,$m='', $instantiated=0,$file=''){
+	static function include_class($class,$m='', $instantiated=1,$file=''){
 		if(!$file){
 			$class_dirname=$m?'module'.DIRECTORY_SEPARATOR.$m.DIRECTORY_SEPARATOR.'class':'class';
 			$file=ROOT.DIRECTORY_SEPARATOR.$class_dirname.DIRECTORY_SEPARATOR.$class.'.php';
@@ -151,4 +151,3 @@ class dir{
 	}
 }
 ?>
-

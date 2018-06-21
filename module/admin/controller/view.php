@@ -25,6 +25,9 @@ class view extends db{
 	function me_view(){
 		dir::include_tpl();
 	}
+	//用户列表
+	function user(){
+		dir::include_tpl();
+	}
 }
 ?>
-

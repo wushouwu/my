@@ -15,8 +15,8 @@ class index{
 		}
 		$c=(isset($_REQUEST['c']) && $_REQUEST['c']? $_REQUEST['c']:'view');
 		$c_path=$m_path.DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.$c.'.php';
-		dir::include_class('db');
-		dir::include_class('controller');
+		dir::include_class('db','',0);
+		dir::include_class('controller','',0);
 		$controller=dir::include_class($c,'',1,$c_path);
 		$a=isset($_REQUEST['a']) && $_REQUEST['a']?$_REQUEST['a']:'me';
 		if(method_exists($c,$a)){
